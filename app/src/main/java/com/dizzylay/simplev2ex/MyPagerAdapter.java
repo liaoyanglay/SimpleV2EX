@@ -27,6 +27,18 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
+    public CharSequence getPageTitle(int position) {
+        switch (position) {
+            case 0:
+                return "Latest";
+            case 1:
+                return "Hot";
+            default:
+        }
+        return null;
+    }
+
+    @Override
     public int getCount() {
         return fragments.size();
     }

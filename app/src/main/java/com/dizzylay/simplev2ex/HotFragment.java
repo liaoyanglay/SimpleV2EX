@@ -17,7 +17,7 @@ public class HotFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.hot_fragment,container,false);
+        View view = inflater.inflate(R.layout.list_fragment,container,false);
         return view;
     }
 }
