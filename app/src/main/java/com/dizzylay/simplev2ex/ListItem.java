@@ -1,19 +1,21 @@
 package com.dizzylay.simplev2ex;
 
+import android.graphics.Bitmap;
+
 /**
  * a
  * Name
  * Created by liaoy on 2018/4/3.
  */
 public class ListItem {
-    private String avatar;
+    private Bitmap avatar;
     private String title;
     private String nodeTitle;
     private String username;
     private String replies;
     private String url;
 
-    public ListItem(String avatar, String title, String nodeTitle, String username, String
+    public ListItem(Bitmap avatar, String title, String nodeTitle, String username, String
             replies, String url) {
         this.avatar = avatar;
         this.title = title;
@@ -23,7 +25,7 @@ public class ListItem {
         this.url = url;
     }
 
-    public String getAvatar() {
+    public Bitmap getAvatar() {
         return avatar;
     }
 

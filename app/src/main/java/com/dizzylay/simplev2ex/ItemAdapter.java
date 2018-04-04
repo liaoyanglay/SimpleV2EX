@@ -53,7 +53,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ListItem item = itemList.get(position);
-        holder.avatar.setImageURI(Uri.parse(item.getAvatar()));
+        holder.avatar.setImageBitmap(item.getAvatar());
         holder.title.setText(item.getTitle());
         holder.nodeTitle.setText(item.getNodeTitle());
         holder.username.setText(item.getUsername());
