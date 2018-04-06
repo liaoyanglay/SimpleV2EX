@@ -1,6 +1,5 @@
 package com.dizzylay.simplev2ex;
 
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,7 @@ import java.util.List;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     private List<ListItem> itemList;
+    private OnItemClickListener onItemClickListener;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         View item;
@@ -47,6 +47,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent,
                 false);
         ViewHolder holder = new ViewHolder(view);
+        holder.item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.onItemClick(v, (int) v.getTag());
+            }
+        });
         return holder;
     }
 
@@ -58,10 +64,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.nodeTitle.setText(item.getNodeTitle());
         holder.username.setText(item.getUsername());
         holder.replies.setText(item.getReplies());
+        holder.itemView.setTag(position);
     }
 
     @Override
     public int getItemCount() {
         return itemList.size();
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(View v,int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 }

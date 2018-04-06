@@ -6,16 +6,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    int currentFragment = 0;
-
     ArrayList<Fragment> fragments;
     android.support.v4.app.FragmentManager fragmentManager;
     ViewPager viewPager;
+
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
         initFragment();
         initViewPager();
         tabLayout.setupWithViewPager(viewPager);
-
     }
 
     private void initFragment() {
