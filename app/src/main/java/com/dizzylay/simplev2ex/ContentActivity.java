@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -37,7 +38,7 @@ public class ContentActivity extends AppCompatActivity {
     private static final int ADD_REPLY = 1;
     private static final int UPDATE_REPLY = 2;
 
-    private Handler handler = new Handler(Looper.getMainLooper()){
+    private Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -48,7 +49,7 @@ public class ContentActivity extends AppCompatActivity {
                     headerReplies.setText(repliesHeader);
                     break;
                 case ADD_REPLY:
-                    Log.w(TAG, "handleMessage: "+ repliesItemList.size());
+                    Log.w(TAG, "handleMessage: " + repliesItemList.size());
                     adapter.notifyDataSetChanged();
                     break;
                 default:
@@ -72,6 +73,8 @@ public class ContentActivity extends AppCompatActivity {
         TextView username = findViewById(R.id.username_header);
         username.setText(intent.getStringExtra("USERNAME"));
         RecyclerView recyclerView = findViewById(R.id.replies_list);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration
+                .VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new RepliesAdapter(repliesItemList);
         recyclerView.setAdapter(adapter);

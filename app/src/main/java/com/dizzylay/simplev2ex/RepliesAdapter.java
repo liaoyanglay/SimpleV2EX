@@ -36,7 +36,7 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
         holder.username.setText(item.getUsername());
         holder.replyContent.setText(item.getReplyContent());
         holder.replyTime.setText(item.getReplyTime());
-        holder.position.setText(position);
+        holder.position.setText(String.valueOf(position + 1));
     }
 
     @Override

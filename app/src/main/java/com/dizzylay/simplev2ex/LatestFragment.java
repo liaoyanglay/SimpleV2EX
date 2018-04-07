@@ -43,6 +43,7 @@ public class LatestFragment extends Fragment {
     private static final String TAG = "LatestFragment";
     private static final int ADD_ITEM = 0;
     private static final int UPDATE_LIST = 1;
+    private boolean ALREADY_LOAD = false;
 
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler(Looper.getMainLooper()) {
@@ -73,27 +74,30 @@ public class LatestFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        RecyclerView recyclerView = getActivity().findViewById(R.id.latest_list);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
-                DividerItemDecoration.VERTICAL));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new ItemAdapter(itemList);
-        adapter.setOnItemClickListener(new ItemAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                ListItem item = itemList.get(position);
-                Intent intent = new Intent(getActivity(),ContentActivity.class);
-                intent.putExtra("URL",item.getUrl());
-                intent.putExtra("AVATAR",item.getAvatar());
-                intent.putExtra("USERNAME",item.getUsername());
-                intent.putExtra("TITLE",item.getTitle());
-                intent.putExtra("NODE_TITLE",item.getNodeTitle());
-                startActivity(intent);
-            }
-        });
-        recyclerView.setAdapter(adapter);
-        Log.d(TAG, "onStart: ");
-        sendRequest();
+        if (!ALREADY_LOAD) {
+            RecyclerView recyclerView = getActivity().findViewById(R.id.latest_list);
+            recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),
+                    DividerItemDecoration.VERTICAL));
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            adapter = new ItemAdapter(itemList);
+            adapter.setOnItemClickListener(new ItemAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View v, int position) {
+                    ListItem item = itemList.get(position);
+                    Intent intent = new Intent(getActivity(), ContentActivity.class);
+                    intent.putExtra("URL", item.getUrl());
+                    intent.putExtra("AVATAR", item.getAvatar());
+                    intent.putExtra("USERNAME", item.getUsername());
+                    intent.putExtra("TITLE", item.getTitle());
+                    intent.putExtra("NODE_TITLE", item.getNodeTitle());
+                    startActivity(intent);
+                }
+            });
+            recyclerView.setAdapter(adapter);
+            Log.d(TAG, "onStart: ");
+            sendRequest();
+            ALREADY_LOAD = true;
+        }
     }
 
     public void sendRequest() {
