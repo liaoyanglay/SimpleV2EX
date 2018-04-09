@@ -1,8 +1,10 @@
 package com.dizzylay.simplev2ex;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -25,22 +27,27 @@ import java.util.List;
  * Name
  * Created by liaoy on 2018/4/5.
  */
-public class LoadListTask extends AsyncTask<Void, Integer, Boolean> {
+public class LoadListTask extends AsyncTask<Integer, Integer, Integer> {
 
-    private static final int ADD_ITEM = 0;
-    private static final int UPDATE_LIST = 1;
+    public static final int ADD_ITEM = 0;
+    public static final int LOAD_LIST = 1;
+    public static final int UPDATE_LIST = 2;
     private static final String TAG = "LoadListTask";
 
     private List<ListItem> itemList;
     private ItemAdapter adapter;
+    @SuppressLint("StaticFieldLeak")
+    private SwipeRefreshLayout refreshLayout;
 
-    public LoadListTask(List<ListItem> itemList, ItemAdapter adapter) {
+    public LoadListTask(List<ListItem> itemList, ItemAdapter adapter,
+                        SwipeRefreshLayout refreshLayout) {
         this.itemList = itemList;
         this.adapter = adapter;
+        this.refreshLayout = refreshLayout;
     }
 
     @Override
-    protected final Boolean doInBackground(Void... params) {
+    protected final Integer doInBackground(Integer... params) {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         try {
@@ -57,9 +64,9 @@ public class LoadListTask extends AsyncTask<Void, Integer, Boolean> {
                 response.append(line);
             }
             JSONArray jsonArray = new JSONArray(response.toString());
-            for (int i = 0; i< jsonArray.length(); i++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject item = jsonArray.getJSONObject(i);
-                parseJSON(item,itemList);
+                parseJSON(item, itemList);
                 publishProgress(i);
             }
         } catch (Exception e) {
@@ -76,13 +83,19 @@ public class LoadListTask extends AsyncTask<Void, Integer, Boolean> {
                 connection.disconnect();
             }
         }
-        return true;
+        return params[0];
     }
 
     @Override
-    protected void onPostExecute(Boolean aBoolean) {
-        if (aBoolean) {
-            adapter.notifyDataSetChanged();
+    protected void onPostExecute(Integer action) {
+        switch (action) {
+            case LOAD_LIST:
+                adapter.notifyDataSetChanged();
+                break;
+            case UPDATE_LIST:
+                refreshLayout.setRefreshing(false);
+                break;
+            default:
         }
     }
 

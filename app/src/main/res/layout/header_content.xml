@@ -10,7 +10,7 @@
 
         <TextView
             android:id="@+id/title_header"
-            android:layout_width="330dp"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:textColor="#000000"
@@ -36,6 +36,17 @@
             android:layout_toEndOf="@+id/username_header"
             android:layout_toRightOf="@+id/username_header"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/time_header"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/title_header"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/node_title_header"
+            android:layout_toEndOf="@+id/node_title_header" />
 
         <ImageView
             android:id="@+id/avatar_header"
@@ -70,7 +81,9 @@
     <TextView
         android:id="@+id/replies_header"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp" />
 
     <View
         android:layout_width="match_parent"
