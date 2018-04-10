@@ -2,6 +2,9 @@ package com.dizzylay.simplev2ex;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by dizzylay on 2018/4/9.

@@ -43,6 +43,7 @@ public class HotFragment extends Fragment {
         if (!ALREADY_LOAD) {
             refreshLayout = getActivity().findViewById(R.id.hot_refresh);
             refreshLayout.setColorSchemeResources(R.color.colorPrimary);
+            refreshLayout.setRefreshing(true);
             refreshLayout.setOnRefreshListener(() -> {
                 itemList.clear();
                 LoadListTask loadListTask = new LoadListTask(itemList, adapter, refreshLayout);

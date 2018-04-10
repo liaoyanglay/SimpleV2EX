@@ -47,12 +47,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent,
                 false);
         ViewHolder holder = new ViewHolder(view);
-        holder.item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickListener.onItemClick(v, (int) v.getTag());
-            }
-        });
+        holder.item.setOnClickListener(v -> onItemClickListener.onItemClick(v, (int) v.getTag()));
         return holder;
     }
 

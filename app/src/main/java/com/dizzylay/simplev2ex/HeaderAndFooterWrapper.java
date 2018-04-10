@@ -1,20 +1,22 @@
 package com.dizzylay.simplev2ex;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.zip.Inflater;
 
 /**
  * Created by dizzylay on 2018/4/9.
  */
-public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class HeaderAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private RecyclerView.Adapter adapter;
 
+    private View headerView = null;
+    private View footerView = null;
+
+    private final static int TYPE_HEADER = 0;
     private final static int TYPE_ITEM = 1;
     private final static int TYPE_FOOTER = 2;
 
@@ -24,13 +26,15 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private int loadState = LOADING_COMPLETE;
 
-    public LoadMoreAdapter(RecyclerView.Adapter adapter) {
+    public HeaderAndFooterWrapper(RecyclerView.Adapter adapter) {
         this.adapter = adapter;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == getItemCount() - 1) {
+        if (headerView != null) {
+            return TYPE_HEADER;
+        } else if (footerView != null) {
             return TYPE_FOOTER;
         }
         return TYPE_ITEM;
@@ -39,9 +43,9 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_FOOTER) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.footer_view,
-                    parent, false);
-            return new FootViewHolder(view);
+            return new FootViewHolder(headerView);
+        } else if (viewType == TYPE_HEADER) {
+            return new HeadViewHolder(footerView);
         }
         return adapter.onCreateViewHolder(parent, viewType);
     }
@@ -56,7 +60,7 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     footViewHolder.loadMore.setVisibility(View.VISIBLE);
                     break;
                 case LOADING_COMPLETE:
-                    footViewHolder.loadMore.setVisibility(View.INVISIBLE);
+                    footViewHolder.loadMore.setVisibility(View.GONE);
                     break;
                 case LOADING_END:
                     footViewHolder.loadMore.setText("--已经到底啦--");
@@ -65,14 +69,63 @@ public class LoadMoreAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 default:
                     break;
             }
-        } else {
-            adapter.onBindViewHolder(holder, position);
+            return;
+        } else  if (holder instanceof HeadViewHolder) {
+            return;
         }
+        adapter.onBindViewHolder(holder, position);
     }
 
     @Override
     public int getItemCount() {
-        return adapter.getItemCount() + 1;
+        if (headerView != null) {
+            if (footerView != null) {
+                return adapter.getItemCount() + 2;
+            }
+            return adapter.getItemCount() + 1;
+        } else if (footerView != null) {
+            return adapter.getItemCount() + 1;
+        }
+        return adapter.getItemCount();
+    }
+
+    public int getRealItemCount() {
+        return adapter.getItemCount();
+    }
+
+    public void setHeaderView(View v) {
+        this.headerView = v;
+    }
+
+    public void setFooterView(View v) {
+        this.footerView = v;
+    }
+
+    public View getHeaderView() {
+        return headerView;
+    }
+
+    public View getFooterView() {
+        return footerView;
+    }
+
+    class HeadViewHolder extends RecyclerView.ViewHolder {
+
+        ImageView avatar;
+        TextView title;
+        TextView nodeTitle;
+        TextView username;
+        TextView time;
+
+        public HeadViewHolder(View itemView) {
+            super(itemView);
+            avatar = itemView.findViewById(R.id.avatar_header);
+            title = itemView.findViewById(R.id.title_header);
+            nodeTitle = itemView.findViewById(R.id.node_title_header);
+            username = itemView.findViewById(R.id.username_header);
+            time = itemView.findViewById(R.id.time_header);
+        }
+
     }
 
     class FootViewHolder extends RecyclerView.ViewHolder {

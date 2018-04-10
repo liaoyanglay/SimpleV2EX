@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,7 +31,7 @@ public class ContentActivity extends AppCompatActivity {
     private String contentHeader = "";
     private String repliesHeader = "";
     private String timeHeader = "";
-    private LoadMoreAdapter adapter;
+    private HeaderAndFooterWrapper adapter;
     private List<RepliesItem> repliesItemList = new ArrayList<>();
 
     private static final String TAG = "ContentActivity";
@@ -53,7 +52,7 @@ public class ContentActivity extends AppCompatActivity {
                     headerTime.setText(timeHeader);
                     break;
                 case ADD_REPLY:
-                    Log.w(TAG, "handleMessage: " + repliesItemList.size());
+//                    Log.w(TAG, "handleMessage: " + repliesItemList.size());
                     adapter.notifyDataSetChanged();
                     break;
                 default:
@@ -82,12 +81,12 @@ public class ContentActivity extends AppCompatActivity {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         RepliesAdapter repliesAdapter = new RepliesAdapter(repliesItemList);
-        adapter = new LoadMoreAdapter(repliesAdapter);
+        adapter = new HeaderAndFooterWrapper(repliesAdapter);
         recyclerView.setAdapter(adapter);
-        recyclerView.setOnScrollListener(new EndOnScrollListener() {
+        recyclerView.addOnScrollListener(new EndOnScrollListener() {
             @Override
             public void onLoadMore() {
-                adapter.setLoadState(LoadMoreAdapter.LOADING);
+                Log.d(TAG, "onLoadMore: "+ "loadMore");
             }
         });
         parseHTML();

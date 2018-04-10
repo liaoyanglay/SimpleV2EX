@@ -91,6 +91,7 @@ public class LoadListTask extends AsyncTask<Integer, Integer, Integer> {
         switch (action) {
             case LOAD_LIST:
                 adapter.notifyDataSetChanged();
+                refreshLayout.setRefreshing(false);
                 break;
             case UPDATE_LIST:
                 refreshLayout.setRefreshing(false);

@@ -58,6 +58,7 @@ public class LatestFragment extends Fragment {
                     break;
                 case LOAD_LIST:
                     ALREADY_LOAD = true;
+                    swipeRefreshLayout.setRefreshing(false);
                     break;
                 case UPDATE_LIST:
                     swipeRefreshLayout.setRefreshing(false);
@@ -80,6 +81,7 @@ public class LatestFragment extends Fragment {
         if (!ALREADY_LOAD) {
             swipeRefreshLayout = getActivity().findViewById(R.id.latest_refresh);
             swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+            swipeRefreshLayout.setRefreshing(true);
             swipeRefreshLayout.setOnRefreshListener(() -> {
                 itemList.clear();
                 sendRequest(UPDATE_LIST);
