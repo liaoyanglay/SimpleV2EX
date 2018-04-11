@@ -85,10 +85,4 @@
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="1dp"
-        android:background="#b4b4b4" />
-
 </LinearLayout>

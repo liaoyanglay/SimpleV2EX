@@ -16,15 +16,9 @@ public class HeaderAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.Vi
     private View headerView = null;
     private View footerView = null;
 
-    private final static int TYPE_HEADER = 0;
-    private final static int TYPE_ITEM = 1;
+    private final static int TYPE_ITEM = 0;
+    private final static int TYPE_HEADER = 1;
     private final static int TYPE_FOOTER = 2;
-
-    public final static int LOADING = 0;
-    public final static int LOADING_COMPLETE = 1;
-    public final static int LOADING_END = 2;
-
-    private int loadState = LOADING_COMPLETE;
 
     public HeaderAndFooterWrapper(RecyclerView.Adapter adapter) {
         this.adapter = adapter;
@@ -32,9 +26,9 @@ public class HeaderAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public int getItemViewType(int position) {
-        if (headerView != null) {
+        if (position == 0 && headerView != null) {
             return TYPE_HEADER;
-        } else if (footerView != null) {
+        } else if (position == getItemCount() - 1 && footerView != null) {
             return TYPE_FOOTER;
         }
         return TYPE_ITEM;
@@ -43,9 +37,9 @@ public class HeaderAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == TYPE_FOOTER) {
-            return new FootViewHolder(headerView);
+            return new FootViewHolder(footerView);
         } else if (viewType == TYPE_HEADER) {
-            return new HeadViewHolder(footerView);
+            return new HeadViewHolder(headerView);
         }
         return adapter.onCreateViewHolder(parent, viewType);
     }
@@ -53,27 +47,27 @@ public class HeaderAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof FootViewHolder) {
-            FootViewHolder footViewHolder = (FootViewHolder) holder;
-            switch (loadState) {
-                case LOADING:
-                    footViewHolder.loadMore.setText("loading...");
-                    footViewHolder.loadMore.setVisibility(View.VISIBLE);
-                    break;
-                case LOADING_COMPLETE:
-                    footViewHolder.loadMore.setVisibility(View.GONE);
-                    break;
-                case LOADING_END:
-                    footViewHolder.loadMore.setText("--已经到底啦--");
-                    footViewHolder.loadMore.setVisibility(View.VISIBLE);
-                    break;
-                default:
-                    break;
-            }
+//            FootViewHolder footViewHolder = (FootViewHolder) holder;
+//            switch (loadState) {
+//                case LOADING:
+//                    footViewHolder.loadMore.setText("loading...");
+//                    footViewHolder.loadMore.setVisibility(View.VISIBLE);
+//                    break;
+//                case LOADING_COMPLETE:
+//                    footViewHolder.loadMore.setVisibility(View.GONE);
+//                    break;
+//                case LOADING_END:
+//                    footViewHolder.loadMore.setText("--已经到底啦--");
+//                    footViewHolder.loadMore.setVisibility(View.VISIBLE);
+//                    break;
+//                default:
+//                    break;
+//            }
             return;
         } else  if (holder instanceof HeadViewHolder) {
             return;
         }
-        adapter.onBindViewHolder(holder, position);
+        adapter.onBindViewHolder(holder, position - (headerView == null ? 0 : 1));
     }
 
     @Override
@@ -95,10 +89,12 @@ public class HeaderAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.Vi
 
     public void setHeaderView(View v) {
         this.headerView = v;
+        notifyItemInserted(0);
     }
 
     public void setFooterView(View v) {
         this.footerView = v;
+        notifyItemInserted(getItemCount() - 1);
     }
 
     public View getHeaderView() {
@@ -138,8 +134,4 @@ public class HeaderAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.Vi
         }
     }
 
-    public void setLoadState(int loadState) {
-        this.loadState = loadState;
-        notifyDataSetChanged();
-    }
 }
