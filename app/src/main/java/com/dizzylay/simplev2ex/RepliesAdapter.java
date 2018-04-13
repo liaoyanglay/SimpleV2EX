@@ -1,6 +1,7 @@
 package com.dizzylay.simplev2ex;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * a
@@ -17,6 +20,7 @@ import java.util.List;
 public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHolder> {
 
     private List<RepliesItem> repliesItemList;
+    private OnItemClickListener mOnClickListener;
 
     public RepliesAdapter(List<RepliesItem> repliesItemList) {
         this.repliesItemList = repliesItemList;
@@ -26,7 +30,12 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.replies_content,
                 parent, false);
-        return new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(view);
+        holder.avatar.setOnClickListener(v -> mOnClickListener.onItemClick(v, (int) holder
+                .itemView.getTag()));
+        holder.username.setOnClickListener(v -> mOnClickListener.onItemClick(v, (int) holder
+                .itemView.getTag()));
+        return holder;
     }
 
     @Override
@@ -37,6 +46,7 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
         holder.replyContent.setText(item.getReplyContent());
         holder.replyTime.setText(item.getReplyTime());
         holder.position.setText(String.valueOf(position + 1));
+        holder.itemView.setTag(position);
     }
 
     @Override
@@ -60,5 +70,13 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
             replyTime = itemView.findViewById(R.id.time_reply);
             position = itemView.findViewById(R.id.position);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View v, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onClickListener) {
+        this.mOnClickListener = onClickListener;
     }
 }

@@ -8,10 +8,10 @@ import android.graphics.Bitmap;
  * Created by liaoy on 2018/4/6.
  */
 public class RepliesItem {
-    Bitmap avatar;
-    String username;
-    String replyTime;
-    String replyContent;
+    private Bitmap avatar;
+    private String username;
+    private String replyTime;
+    private String replyContent;
 
     public RepliesItem(Bitmap avatar, String username, String replyTime, String replyContent) {
         this.avatar = avatar;

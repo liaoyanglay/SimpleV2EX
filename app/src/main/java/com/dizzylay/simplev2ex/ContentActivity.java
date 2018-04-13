@@ -50,7 +50,7 @@ public class ContentActivity extends AppCompatActivity {
     public final static int LOADING_END = 2;
 
     private static int ONE_TIME_LOAD = 20;
-    private int loadState = LOADING_COMPLETE;
+    private int loadState = LOADING;
     private int loadedRepliesNumber = 0;
     private int page = 0;
     private boolean isFirstTimeLoad = true;
@@ -93,6 +93,13 @@ public class ContentActivity extends AppCompatActivity {
                 .VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         RepliesAdapter repliesAdapter = new RepliesAdapter(repliesItemList);
+        repliesAdapter.setOnItemClickListener((v, position) -> {
+            RepliesItem item = repliesItemList.get(position);
+            Intent intent = new Intent(this, UserActivity.class);
+            intent.putExtra("USERNAME",item.getUsername());
+            intent.putExtra("AVATAR",item.getAvatar());
+            startActivity(intent);
+        });
         adapter = new HeaderAndFooterWrapper(repliesAdapter);
         recyclerView.setAdapter(adapter);
         View headView = createHeaderView(recyclerView);
@@ -159,7 +166,9 @@ public class ContentActivity extends AppCompatActivity {
         }
 
         Element main = doc.selectFirst("div#Main");
-        timeHeader = main.selectFirst("small").ownText();
+        if (main.selectFirst("small") != null) {
+            timeHeader = main.selectFirst("small").ownText();
+        }
         Elements replies = doc.select("div.box").last().select("div.cell");
 //                    Log.w(TAG, "run: " + replies.toString());
         if (replies.size() > 0) {
@@ -194,10 +203,10 @@ public class ContentActivity extends AppCompatActivity {
 //                        Log.d(TAG, "run: " + username + replyContent);
             repliesItemList.add(new RepliesItem(avatar, username, replyTime,
                     replyContent));
-            Message message = new Message();
-            message.what = ADD_REPLY;
-            handler.sendMessage(message);
         }
+        Message message = new Message();
+        message.what = ADD_REPLY;
+        handler.sendMessage(message);
         if (replies.size() < loadNumber + ONE_TIME_LOAD) {
             loadState = LOADING_END;
         } else {
@@ -209,13 +218,19 @@ public class ContentActivity extends AppCompatActivity {
         View headView = LayoutInflater.from(this).inflate(R.layout.header_content, parent,
                 false);
         ImageView avatar = headView.findViewById(R.id.avatar_header);
-        avatar.setImageBitmap((Bitmap) intent.getParcelableExtra("AVATAR"));
+        avatar.setImageBitmap(intent.getParcelableExtra("AVATAR"));
         TextView title = headView.findViewById(R.id.title_header);
         title.setText(intent.getStringExtra("TITLE"));
         TextView nodeTitle = headView.findViewById(R.id.node_title_header);
         nodeTitle.setText(intent.getStringExtra("NODE_TITLE"));
         TextView username = headView.findViewById(R.id.username_header);
         username.setText(intent.getStringExtra("USERNAME"));
+        avatar.setOnClickListener(v -> {
+            Intent start = new Intent(ContentActivity.this,UserActivity.class);
+            start.putExtra("USERNAME",intent.getStringExtra("USERNAME"));
+            start.putExtra("AVATAR",(Bitmap)intent.getParcelableExtra("AVATAR"));
+            startActivity(start);
+        });
         return headView;
     }
 
@@ -223,6 +238,8 @@ public class ContentActivity extends AppCompatActivity {
         View footView = LayoutInflater.from(this).inflate(R.layout.footer_view, parent,
                 false);
         loadMore = footView.findViewById(R.id.load_more);
+        loadMore.setText("loading...");
+        loadMore.setVisibility(View.VISIBLE);
         return footView;
     }
 

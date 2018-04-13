@@ -46,6 +46,7 @@ public class HotFragment extends Fragment {
             refreshLayout.setRefreshing(true);
             refreshLayout.setOnRefreshListener(() -> {
                 itemList.clear();
+                adapter.notifyDataSetChanged();
                 LoadListTask loadListTask = new LoadListTask(itemList, adapter, refreshLayout);
                 loadListTask.execute(LoadListTask.UPDATE_LIST);
             });

@@ -48,7 +48,6 @@ public class LatestFragment extends Fragment {
     private static final int UPDATE_LIST = 2;
     private boolean ALREADY_LOAD = false;
 
-    @SuppressLint("HandlerLeak")
     private Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -84,6 +83,7 @@ public class LatestFragment extends Fragment {
             swipeRefreshLayout.setRefreshing(true);
             swipeRefreshLayout.setOnRefreshListener(() -> {
                 itemList.clear();
+                adapter.notifyDataSetChanged();
                 sendRequest(UPDATE_LIST);
             });
             RecyclerView recyclerView = getActivity().findViewById(R.id.latest_list);
