@@ -2,6 +2,8 @@ package com.dizzylay.simplev2ex;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -11,6 +13,9 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +40,7 @@ public class ContentActivity extends AppCompatActivity {
     private String contentHeader = "";
     private String repliesHeader = "";
     private String timeHeader = "";
+    private Spanned contentHeaderSpanned;
 
     private HeaderAndFooterWrapper adapter;
     private List<RepliesItem> repliesItemList = new ArrayList<>();
@@ -57,6 +63,22 @@ public class ContentActivity extends AppCompatActivity {
 
     private Document doc;
 
+    private Html.ImageGetter imageGetter = new Html.ImageGetter() {
+        @Override
+        public Drawable getDrawable(String source) {
+            BitmapDrawable drawable = null;
+            try {
+                Bitmap bitmap = LoadListTask.getURLImage(new URL(source));
+                drawable = new BitmapDrawable(bitmap);
+                drawable.setBounds(0, 0, 2 * drawable.getIntrinsicWidth(), 2 * drawable
+                        .getIntrinsicHeight());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            return drawable;
+        }
+    };
+
     private Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -65,7 +87,8 @@ public class ContentActivity extends AppCompatActivity {
                     TextView headerContent = findViewById(R.id.content_header);
                     TextView headerReplies = findViewById(R.id.replies_header);
                     TextView headerTime = findViewById(R.id.time_header);
-                    headerContent.setText(contentHeader);
+                    headerContent.setText(contentHeaderSpanned);
+                    headerContent.setMovementMethod(LinkMovementMethod.getInstance());
                     headerReplies.setText(repliesHeader);
                     headerTime.setText(timeHeader);
                     break;
@@ -96,8 +119,8 @@ public class ContentActivity extends AppCompatActivity {
         repliesAdapter.setOnItemClickListener((v, position) -> {
             RepliesItem item = repliesItemList.get(position);
             Intent intent = new Intent(this, UserActivity.class);
-            intent.putExtra("USERNAME",item.getUsername());
-            intent.putExtra("AVATAR",item.getAvatar());
+            intent.putExtra("USERNAME", item.getUsername());
+            intent.putExtra("AVATAR", item.getAvatar());
             startActivity(intent);
         });
         adapter = new HeaderAndFooterWrapper(repliesAdapter);
@@ -153,17 +176,19 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     private void parseHeader() {
-        Element header = doc.selectFirst("div.topic_content");
+        Element header = doc.select("div.cell").get(1).selectFirst("div.topic_content");
         Elements subtitle = doc.select("div.subtle");
 //                    Log.d(TAG, "run: " + header.toString());
         if (header != null) {
-            contentHeader = header.text();
+            contentHeader = header.toString();
         }
         for (int i = 0; i < subtitle.size(); i++) {
-            String addContent = "\n\n" + subtitle.get(i).select("span.fade").text()
-                    + "\n" + subtitle.get(i).select("div.topic_content").text();
+            String addContent = subtitle.get(i).select("span.fade").toString()
+                    + subtitle.get(i).select("div.topic_content").toString();
             contentHeader = contentHeader.concat(addContent);
         }
+
+        contentHeaderSpanned = Html.fromHtml(contentHeader, imageGetter, null);
 
         Element main = doc.selectFirst("div#Main");
         if (main.selectFirst("small") != null) {
@@ -199,10 +224,11 @@ public class ContentActivity extends AppCompatActivity {
             Bitmap avatar = LoadListTask.getURLImage(avatarUrl);
             String username = reply.selectFirst("a.dark").text();
             String replyTime = reply.selectFirst("span.ago").text();
-            String replyContent = reply.selectFirst("div.reply_content").text();
+            String replyContent = reply.selectFirst("div.reply_content").toString();
+            Spanned replyContentSpanned = Html.fromHtml(replyContent, imageGetter, null);
 //                        Log.d(TAG, "run: " + username + replyContent);
             repliesItemList.add(new RepliesItem(avatar, username, replyTime,
-                    replyContent));
+                    replyContentSpanned));
         }
         Message message = new Message();
         message.what = ADD_REPLY;
@@ -226,9 +252,9 @@ public class ContentActivity extends AppCompatActivity {
         TextView username = headView.findViewById(R.id.username_header);
         username.setText(intent.getStringExtra("USERNAME"));
         avatar.setOnClickListener(v -> {
-            Intent start = new Intent(ContentActivity.this,UserActivity.class);
-            start.putExtra("USERNAME",intent.getStringExtra("USERNAME"));
-            start.putExtra("AVATAR",(Bitmap)intent.getParcelableExtra("AVATAR"));
+            Intent start = new Intent(ContentActivity.this, UserActivity.class);
+            start.putExtra("USERNAME", intent.getStringExtra("USERNAME"));
+            start.putExtra("AVATAR", (Bitmap) intent.getParcelableExtra("AVATAR"));
             startActivity(start);
         });
         return headView;

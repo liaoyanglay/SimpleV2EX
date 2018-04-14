@@ -1,6 +1,8 @@
 package com.dizzylay.simplev2ex;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +46,7 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
         holder.avatar.setImageBitmap(item.getAvatar());
         holder.username.setText(item.getUsername());
         holder.replyContent.setText(item.getReplyContent());
+        holder.replyContent.setMovementMethod(LinkMovementMethod.getInstance());
         holder.replyTime.setText(item.getReplyTime());
         holder.position.setText(String.valueOf(position + 1));
         holder.itemView.setTag(position);

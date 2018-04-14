@@ -1,6 +1,7 @@
 package com.dizzylay.simplev2ex;
 
 import android.graphics.Bitmap;
+import android.text.Spanned;
 
 /**
  * a
@@ -11,9 +12,9 @@ public class RepliesItem {
     private Bitmap avatar;
     private String username;
     private String replyTime;
-    private String replyContent;
+    private Spanned replyContent;
 
-    public RepliesItem(Bitmap avatar, String username, String replyTime, String replyContent) {
+    public RepliesItem(Bitmap avatar, String username, String replyTime, Spanned replyContent) {
         this.avatar = avatar;
         this.username = username;
         this.replyTime = replyTime;
@@ -44,11 +45,11 @@ public class RepliesItem {
         this.replyTime = replyTime;
     }
 
-    public String getReplyContent() {
+    public Spanned getReplyContent() {
         return replyContent;
     }
 
-    public void setReplyContent(String replyContent) {
+    public void setReplyContent(Spanned replyContent) {
         this.replyContent = replyContent;
     }
 }
