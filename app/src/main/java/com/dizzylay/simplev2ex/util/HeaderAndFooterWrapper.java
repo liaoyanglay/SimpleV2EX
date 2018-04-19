@@ -1,10 +1,12 @@
-package com.dizzylay.simplev2ex;
+package com.dizzylay.simplev2ex.util;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.dizzylay.simplev2ex.R;
 
 /**
  * Created by dizzylay on 2018/4/9.

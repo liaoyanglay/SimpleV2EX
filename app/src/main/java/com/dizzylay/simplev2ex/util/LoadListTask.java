@@ -1,11 +1,13 @@
-package com.dizzylay.simplev2ex;
+package com.dizzylay.simplev2ex.util;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
+
+import com.dizzylay.simplev2ex.adapter.ItemAdapter;
+import com.dizzylay.simplev2ex.javabean.ListItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;

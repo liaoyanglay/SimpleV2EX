@@ -1,4 +1,4 @@
-package com.dizzylay.simplev2ex;
+package com.dizzylay.simplev2ex.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,6 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.dizzylay.simplev2ex.javabean.ListItem;
+import com.dizzylay.simplev2ex.R;
 
 import java.util.List;
 

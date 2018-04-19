@@ -1,4 +1,4 @@
-package com.dizzylay.simplev2ex;
+package com.dizzylay.simplev2ex.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,12 +16,18 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.dizzylay.simplev2ex.util.EndOnScrollListener;
+import com.dizzylay.simplev2ex.util.HeaderAndFooterWrapper;
+import com.dizzylay.simplev2ex.util.LoadListTask;
+import com.dizzylay.simplev2ex.R;
+import com.dizzylay.simplev2ex.adapter.RepliesAdapter;
+import com.dizzylay.simplev2ex.javabean.RepliesItem;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -63,20 +69,17 @@ public class ContentActivity extends AppCompatActivity {
 
     private Document doc;
 
-    private Html.ImageGetter imageGetter = new Html.ImageGetter() {
-        @Override
-        public Drawable getDrawable(String source) {
-            BitmapDrawable drawable = null;
-            try {
-                Bitmap bitmap = LoadListTask.getURLImage(new URL(source));
-                drawable = new BitmapDrawable(bitmap);
-                drawable.setBounds(0, 0, 2 * drawable.getIntrinsicWidth(), 2 * drawable
-                        .getIntrinsicHeight());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            return drawable;
+    private Html.ImageGetter imageGetter = source -> {
+        BitmapDrawable drawable = null;
+        try {
+            Bitmap bitmap = LoadListTask.getURLImage(new URL(source));
+            drawable = new BitmapDrawable(bitmap);
+            drawable.setBounds(0, 0, 2 * drawable.getIntrinsicWidth(), 2 * drawable
+                    .getIntrinsicHeight());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
+        return drawable;
     };
 
     private Handler handler = new Handler(Looper.getMainLooper()) {

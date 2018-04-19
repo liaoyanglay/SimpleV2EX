@@ -1,4 +1,4 @@
-package com.dizzylay.simplev2ex;
+package com.dizzylay.simplev2ex.activity;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -9,10 +9,14 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.dizzylay.simplev2ex.adapter.ItemAdapter;
+import com.dizzylay.simplev2ex.javabean.ListItem;
+import com.dizzylay.simplev2ex.R;
+import com.dizzylay.simplev2ex.javabean.ReplyInformation;
+import com.dizzylay.simplev2ex.adapter.ReplyInformationAdapter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

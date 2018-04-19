@@ -1,18 +1,17 @@
-package com.dizzylay.simplev2ex;
+package com.dizzylay.simplev2ex.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
+import com.dizzylay.simplev2ex.R;
+import com.dizzylay.simplev2ex.javabean.RepliesItem;
 
-import static android.content.ContentValues.TAG;
+import java.util.List;
 
 /**
  * a

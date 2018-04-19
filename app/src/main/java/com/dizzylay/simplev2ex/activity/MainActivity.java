@@ -1,4 +1,4 @@
-package com.dizzylay.simplev2ex;
+package com.dizzylay.simplev2ex.activity;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -6,7 +6,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+
+import com.dizzylay.simplev2ex.fragment.HotFragment;
+import com.dizzylay.simplev2ex.fragment.LatestFragment;
+import com.dizzylay.simplev2ex.adapter.MyPagerAdapter;
+import com.dizzylay.simplev2ex.R;
 
 import java.util.ArrayList;
 

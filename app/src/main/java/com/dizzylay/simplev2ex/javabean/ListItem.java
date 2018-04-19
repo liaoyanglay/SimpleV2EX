@@ -1,4 +1,4 @@
-package com.dizzylay.simplev2ex;
+package com.dizzylay.simplev2ex.javabean;
 
 import android.graphics.Bitmap;
 

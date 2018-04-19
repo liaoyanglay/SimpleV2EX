@@ -1,4 +1,4 @@
-package com.dizzylay.simplev2ex;
+package com.dizzylay.simplev2ex.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

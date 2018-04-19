@@ -1,4 +1,4 @@
-package com.dizzylay.simplev2ex;
+package com.dizzylay.simplev2ex.javabean;
 
 /**
  * Created by dizzylay on 2018/4/12.
